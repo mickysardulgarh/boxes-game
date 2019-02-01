@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { interval } from 'rxjs';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
 	selector: 'app-root',
@@ -10,22 +11,54 @@ import { interval } from 'rxjs';
 export class AppComponent implements OnInit {
 	title = 'game-boxes';
 
-	rows = 5; //5 * 5
-	noOfColorBoxes: number = 15; //max 25
-	dificulty: number = 2 * 1000;
+	rows: number;
+	noOfColorBoxes: number;
+	dificulty: number;
+
 	colorList: Array<string> = ['#0000ff', '#9c27b0', '#e91e63', '#607d8b', '#009688', '#8bc34a', '#ffeb3b', '#ffc107']
 	colorBoxes: Array<number>;
 	uncoloredBoxes: Array<number>;
 	boxes: any;
 	poll;
+	totalBoxes: number;
+	isFormSubmitted = false;
+	form: FormGroup;
 
-	totalBoxes: number = this.rows * this.rows;
-	// numbers = Array(this.rows).fill(0).map((x, i) => i);
-	// coloredBox: Array<any> = [];
-	// withoutColor: Array<any>;
+	constructor(
+		private formBuilder: FormBuilder
+	) {
 
+	}
 
-	ngOnInit() {
+	buildForm() {
+		this.form = this.formBuilder.group({
+			noOfBoxes: ['', [Validators.required, Validators.min(0), Validators.max(2000), Validators.pattern("^[0-9]*$")]],
+			noOfColorBoxes: ['', [Validators.required, Validators.min(0), Validators.max(4000000), Validators.pattern("^[0-9]*$")]],
+			dificultyLevel: ['', [Validators.required, Validators.min(0), Validators.max(5), Validators.pattern("^[0-9]*$")]],
+		});
+	}
+
+	onSubmit() {
+
+		console.log(this.form.controls);
+		let formValues = this.form.controls;
+
+		// stop here if form is invalid
+		if (this.form.invalid) {
+			return;
+		}
+
+		this.rows = formValues.noOfBoxes.value;
+		this.noOfColorBoxes = formValues.noOfColorBoxes.value;
+		this.dificulty = formValues.dificultyLevel.value * 1000;
+		this.totalBoxes = this.rows * this.rows;
+
+		if (this.noOfColorBoxes >= this.totalBoxes) {
+			this.gameWon();
+			return;
+		}
+
+		this.isFormSubmitted = true;
 
 		this.setDefaultColorBoxes();
 
@@ -33,7 +66,13 @@ export class AppComponent implements OnInit {
 
 		this.initilizeGame();
 
-		//this.polling();
+		this.polling();
+
+	}
+
+	ngOnInit() {
+
+		this.buildForm();
 	}
 
 
@@ -96,9 +135,9 @@ export class AppComponent implements OnInit {
 
 		if (!this.uncoloredBoxes.length) {
 			setTimeout(() => {
-				alert('Congratulation you won the game !!')
+				this.gameWon();
 				this.poll.unsubscribe();
-				window.location.reload();
+
 			})
 		}
 	}
@@ -133,8 +172,7 @@ export class AppComponent implements OnInit {
 					if (!this.colorBoxes.length) {
 						this.poll.unsubscribe();
 						setTimeout(() => {
-							alert('you loss the game !!');
-							window.location.reload();
+							this.gameLoss();
 						})
 					}
 
@@ -169,4 +207,13 @@ export class AppComponent implements OnInit {
 		return parseInt(items[num]);
 	}
 
+	gameWon() {
+		alert('Congratulation, you won the game !!');
+		window.location.reload();
+	}
+
+	gameLoss() {
+		alert('You loss the game !!');
+		window.location.reload();
+	}
 }

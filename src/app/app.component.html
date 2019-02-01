@@ -1,41 +1,77 @@
-<!-- <div>
-	<table>
-		<tr *ngFor="let m of numbers;let i = index">
-			<td *ngFor="let n of numbers;let j = index" (click)="changeColor($event)" [ngStyle]="checkColor((i * rows + 1) + j )"
-			 id="{{(i * rows + 1) + j }}" class="td-bg">
-		</tr>
-	</table>
-</div> -->
-
-<div>
+<div *ngIf="isFormSubmitted">
 	<table>
 		<tr *ngFor="let box of boxes;">
-
 			<td *ngFor="let i of box;" (click)="changeColor($event.target.id)" [style.background-color]="i.color" id="{{i.id}}"
-			 class="td-bg">
-
-			</td>
+			 class="td-bg">&nbsp;</td>
 		</tr>
 	</table>
 </div>
-<div>
-	<form name="form" (ngSubmit)="f.form.valid && onSubmit()" #f="ngForm" novalidate>
-		<div class="form-group">
-			<label for="firstName">First Name</label>
-			<input type="text" class="form-control" name="firstName" [(ngModel)]="model.firstName" #firstName="ngModel"
-			 [ngClass]="{ 'is-invalid': f.submitted && firstName.invalid }" required />
-			<div *ngIf="f.submitted && firstName.invalid" class="invalid-feedback">
-				<div *ngIf="firstName.errors.required">First Name is required</div>
+<div *ngIf="!isFormSubmitted">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-6 offset-md-3">
+				<h2>Game Form</h2>
+				<form [formGroup]="form" (ngSubmit)="onSubmit()">
+					<div class="form-group">
+						<label>No of Boxes</label>
+						<input type="text" formControlName="noOfBoxes" class="form-control" />
+						<div class="text-danger" *ngIf="(form.controls.noOfBoxes.dirty || form.controls.noOfBoxes.touched)">
+							<span *ngIf="form.controls.noOfBoxes.invalid && form.controls.noOfBoxes.errors.required">
+								No of Boxes Field is Required
+							</span>
+							<span *ngIf="form.controls.noOfBoxes.invalid && form.controls.noOfBoxes.errors.min">
+								Min value should be 0
+							</span>
+							<span *ngIf="form.controls.noOfBoxes.invalid && form.controls.noOfBoxes.errors.max">
+								Max value should be 2000
+							</span>
+							<span *ngIf="form.controls.noOfBoxes.invalid && form.controls.noOfBoxes.errors.pattern && !form.controls.noOfBoxes.errors.min">
+								Enter Only Number Value
+							</span>
+						</div>
+					</div>
+					<div class="form-group">
+						<label>No of Color Boxes</label>
+						<input type="text" formControlName="noOfColorBoxes" class="form-control" [ngClass]="{ 'is-invalid': isFormSubmitted && f.noOfColorBoxes.errors }" />
+						<div class="text-danger" *ngIf="form.controls.noOfColorBoxes.dirty || form.controls.noOfColorBoxes.touched">
+							<span *ngIf="form.controls.noOfColorBoxes.invalid && form.controls.noOfColorBoxes.errors.required">
+								No of Color Boxes is Required
+							</span>
+							<span *ngIf="form.controls.noOfColorBoxes.invalid && form.controls.noOfColorBoxes.errors.min">
+								Min value should be 1
+							</span>
+							<span *ngIf="form.controls.noOfColorBoxes.invalid && form.controls.noOfColorBoxes.errors.max">
+								Max value should be 4000000
+							</span>
+							<span *ngIf="form.controls.noOfColorBoxes.invalid && form.controls.noOfColorBoxes.errors.pattern && !form.controls.noOfColorBoxes.errors.min">
+								Enter Only Number Value
+							</span>
+						</div>
+					</div>
+					<div class="form-group">
+						<label>Dificulty Level</label>
+						<input type="text" formControlName="dificultyLevel" class="form-control" [ngClass]="{ 'is-invalid': isFormSubmitted && f.dificultyLevel.errors }" />
+						<div class="text-danger" *ngIf="form.controls.dificultyLevel.dirty || form.controls.dificultyLevel.touched">
+							<span *ngIf="form.controls.dificultyLevel.invalid && form.controls.dificultyLevel.errors.required">
+								No of Color Boxes is Required
+							</span>
+							<span *ngIf="form.controls.dificultyLevel.invalid && form.controls.dificultyLevel.errors.min">
+								Min value should be 1
+							</span>
+							<span *ngIf="form.controls.dificultyLevel.invalid && form.controls.dificultyLevel.errors.max">
+								Max value should be 5
+							</span>
+							<span *ngIf="form.controls.dificultyLevel.invalid && form.controls.dificultyLevel.errors.pattern && !form.controls.dificultyLevel.errors.min">
+								Enter Only Number Value
+							</span>
+						</div>
+					</div>
+					<div class="form-group">
+						<button [disabled]="!form.valid" class="btn btn-primary">Play Game</button>
+					</div>
+				</form>
 			</div>
 		</div>
-		<div class="form-group">
-			<label for="lastName">Last Name</label>
-			<input type="text" class="form-control" name="lastName" [(ngModel)]="model.lastName" #lastName="ngModel" [ngClass]="{ 'is-invalid': f.submitted && lastName.invalid }"
-			 required />
-			<div *ngIf="f.submitted && lastName.invalid" class="invalid-feedback">
-				<div *ngIf="lastName.errors.required">Last Name is required</div>
-			</div>
-		</div>
-	</form>
+	</div>
 </div>
 <router-outlet></router-outlet>
