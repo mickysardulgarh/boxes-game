@@ -1,16 +1,29 @@
-<div *ngIf="isFormSubmitted">
+<div id="box" *ngIf="isFormSubmitted" (click)="changeColor($event)">
+
+</div>
+
+<!-- <div *ngIf="isFormSubmitted">
+	<table>
+		<tr *ngFor="let m of number;let i = index">
+			<td *ngFor="let n of number;let j = index" (click)="changeColor($event)" 
+			 id="{{'A' + ((i * rows + 1) + j) }}" class="td-bg">
+		</tr>
+	</table>
+</div> -->
+
+<!-- <div *ngIf="isFormSubmitted">
 	<table>
 		<tr *ngFor="let box of boxes;">
 			<td *ngFor="let i of box;" (click)="changeColor($event.target.id)" [style.background-color]="i.color" id="{{i.id}}"
 			 class="td-bg">&nbsp;</td>
 		</tr>
 	</table>
-</div>
+</div> -->
 <div *ngIf="!isFormSubmitted">
 	<div class="container">
 		<div class="row">
 			<div class="col-md-6 offset-md-3">
-				<h2>Game Form</h2>
+				<h2>Game</h2>
 				<form [formGroup]="form" (ngSubmit)="onSubmit()">
 					<div class="form-group">
 						<label>No of Boxes</label>
