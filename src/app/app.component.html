@@ -1,24 +1,7 @@
-<div id="box" *ngIf="isFormSubmitted" (click)="changeColor($event)">
-
+<div *ngIf="isFormSubmitted">
+	<app-matrix [rows]="rows" [noOfColorBoxes]="noOfColorBoxes" [dificulty]="dificulty" [totalBoxes]="totalBoxes"></app-matrix>
 </div>
 
-<!-- <div *ngIf="isFormSubmitted">
-	<table>
-		<tr *ngFor="let m of number;let i = index">
-			<td *ngFor="let n of number;let j = index" (click)="changeColor($event)" 
-			 id="{{'A' + ((i * rows + 1) + j) }}" class="td-bg">
-		</tr>
-	</table>
-</div> -->
-
-<!-- <div *ngIf="isFormSubmitted">
-	<table>
-		<tr *ngFor="let box of boxes;">
-			<td *ngFor="let i of box;" (click)="changeColor($event.target.id)" [style.background-color]="i.color" id="{{i.id}}"
-			 class="td-bg">&nbsp;</td>
-		</tr>
-	</table>
-</div> -->
 <div *ngIf="!isFormSubmitted">
 	<div class="container">
 		<div class="row">
@@ -27,7 +10,7 @@
 				<form [formGroup]="form" (ngSubmit)="onSubmit()">
 					<div class="form-group">
 						<label>No of Boxes</label>
-						<input type="text" formControlName="noOfBoxes" class="form-control" />
+						<input type="text" placeholder="enter n*n matrix value between 1-2000" formControlName="noOfBoxes" class="form-control" />
 						<div class="text-danger" *ngIf="(form.controls.noOfBoxes.dirty || form.controls.noOfBoxes.touched)">
 							<span *ngIf="form.controls.noOfBoxes.invalid && form.controls.noOfBoxes.errors.required">
 								No of Boxes Field is Required
@@ -45,7 +28,8 @@
 					</div>
 					<div class="form-group">
 						<label>No of Color Boxes</label>
-						<input type="text" formControlName="noOfColorBoxes" class="form-control" [ngClass]="{ 'is-invalid': isFormSubmitted && f.noOfColorBoxes.errors }" />
+						<input type="text" placeholder="color boxes value between 1-4000000" formControlName="noOfColorBoxes" class="form-control"
+						 [ngClass]="{ 'is-invalid': isFormSubmitted && f.noOfColorBoxes.errors }" />
 						<div class="text-danger" *ngIf="form.controls.noOfColorBoxes.dirty || form.controls.noOfColorBoxes.touched">
 							<span *ngIf="form.controls.noOfColorBoxes.invalid && form.controls.noOfColorBoxes.errors.required">
 								No of Color Boxes is Required
@@ -63,7 +47,8 @@
 					</div>
 					<div class="form-group">
 						<label>Dificulty Level</label>
-						<input type="text" formControlName="dificultyLevel" class="form-control" [ngClass]="{ 'is-invalid': isFormSubmitted && f.dificultyLevel.errors }" />
+						<input type="text" placeholder="dificulty level value between 1-5" formControlName="dificultyLevel" class="form-control"
+						 [ngClass]="{ 'is-invalid': isFormSubmitted && f.dificultyLevel.errors }" />
 						<div class="text-danger" *ngIf="form.controls.dificultyLevel.dirty || form.controls.dificultyLevel.touched">
 							<span *ngIf="form.controls.dificultyLevel.invalid && form.controls.dificultyLevel.errors.required">
 								No of Color Boxes is Required

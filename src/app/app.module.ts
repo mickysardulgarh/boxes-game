@@ -5,10 +5,12 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ReactiveFormsModule } from '@angular/forms';
+import { MatrixComponent } from './matrix/matrix.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    MatrixComponent
   ],
   imports: [
     BrowserModule,
