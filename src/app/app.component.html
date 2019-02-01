@@ -1,0 +1,41 @@
+<!-- <div>
+	<table>
+		<tr *ngFor="let m of numbers;let i = index">
+			<td *ngFor="let n of numbers;let j = index" (click)="changeColor($event)" [ngStyle]="checkColor((i * rows + 1) + j )"
+			 id="{{(i * rows + 1) + j }}" class="td-bg">
+		</tr>
+	</table>
+</div> -->
+
+<div>
+	<table>
+		<tr *ngFor="let box of boxes;">
+
+			<td *ngFor="let i of box;" (click)="changeColor($event.target.id)" [style.background-color]="i.color" id="{{i.id}}"
+			 class="td-bg">
+
+			</td>
+		</tr>
+	</table>
+</div>
+<div>
+	<form name="form" (ngSubmit)="f.form.valid && onSubmit()" #f="ngForm" novalidate>
+		<div class="form-group">
+			<label for="firstName">First Name</label>
+			<input type="text" class="form-control" name="firstName" [(ngModel)]="model.firstName" #firstName="ngModel"
+			 [ngClass]="{ 'is-invalid': f.submitted && firstName.invalid }" required />
+			<div *ngIf="f.submitted && firstName.invalid" class="invalid-feedback">
+				<div *ngIf="firstName.errors.required">First Name is required</div>
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="lastName">Last Name</label>
+			<input type="text" class="form-control" name="lastName" [(ngModel)]="model.lastName" #lastName="ngModel" [ngClass]="{ 'is-invalid': f.submitted && lastName.invalid }"
+			 required />
+			<div *ngIf="f.submitted && lastName.invalid" class="invalid-feedback">
+				<div *ngIf="lastName.errors.required">Last Name is required</div>
+			</div>
+		</div>
+	</form>
+</div>
+<router-outlet></router-outlet>
